@@ -21,11 +21,19 @@ for output in outputs:
 
 
 
+
+https_proxy=http://proxy.alcf.anl.gov:3128
+http_proxy=http://proxy.alcf.anl.gov:3128
+
 Installation:
 
 Installed at -
 /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM
 
 conda create --prefix /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM python=3.11
+conda activate /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM
+pip install git+https://github.com/huggingface/transformers.git@main accelerate
+pip install git+https://github.com/vllm-project/vllm.git@main
+
 
 
