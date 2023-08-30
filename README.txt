@@ -29,16 +29,16 @@ conda activate /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM
 
 
 
-Installed at -
+### Installed at -
 /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM
 
 
-Installation:
-
+### Installation:
 conda create --prefix /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM python=3.11
 conda activate /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM
 pip install git+https://github.com/huggingface/transformers.git@main accelerate
 pip install git+https://github.com/vllm-project/vllm.git@main
+pip install jupyter
 pip install ray
 
 
