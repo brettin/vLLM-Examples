@@ -21,4 +21,11 @@ for output in outputs:
 
 
 
+Installation:
+
+Installed at -
+/lus/grand/projects/CSC249ADOA01/conda_envs/vLLM
+
+conda create --prefix /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM python=3.11
+
 
