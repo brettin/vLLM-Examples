@@ -31,6 +31,7 @@
 
 ### Installed at -
 	/lus/grand/projects/CSC249ADOA01/conda_envs/vLLM
+ 	/lambda_stor/software/conda_envs/vLLM
 
 
 ### Installation:
