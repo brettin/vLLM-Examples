@@ -8,6 +8,11 @@
   	os.environ['HF_DATASETS_CACHE'] = '/lambda_stor/homes/brettin/.cache'
    	os.environ['TRANSFORMERS_CACHE'] = '/lambda_stor/homes/brettin/.cache'
 
+### To start a ray cluster for parallel inferencing
+	ray start --head
+	ray start --address='140.221.84.8:6379'    # the address and port are
+ 	ray start --address='140.221.84.8:6379'    # this starts a second worker
+
 ### Example
 
 	from vllm import LLM
