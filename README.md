@@ -20,7 +20,7 @@
 
 
 
-Pre-installation on a back end polaris node:
+### Pre-installation on a back end polaris node:
 	module load conda
 	https_proxy=http://proxy.alcf.anl.gov:3128
 	http_proxy=http://proxy.alcf.anl.gov:3128
