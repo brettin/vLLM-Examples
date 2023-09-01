@@ -1,5 +1,5 @@
 ### To manage where model weights are downloaded to
-	export HF_DATASETS_CACHE'=/rbscratch/brettin/.cache
+	export HF_DATASETS_CACHE=/rbscratch/brettin/.cache
 	export TRANSFORMERS_CACHE=/rbscratch/brettin/.cache
 
  or
