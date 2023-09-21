@@ -15,7 +15,8 @@ for i in range(torch.cuda.device_count()):
 #ray.init( logging_level='DEBUG')
 
 #llm = LLM(model="codellama/CodeLlama-34b-Instruct-hf", tensor_parallel_size=2, swap_space=1 )
-llm = LLM(model="codellama/CodeLlama-34b-Instruct-hf", tensor_parallel_size=2)
+# llm = LLM(model="codellama/CodeLlama-34b-Instruct-hf", tensor_parallel_size=2)
+llm = LLM(model="codellama/CodeLlama-7b-Instruct-hf")
 traceback.print_exc()
 
 
@@ -29,6 +30,7 @@ traceback.print_exc()
 # for n in range(10):
 sampling_params = SamplingParams(temperature=0.8, top_p=0.95)
 filling = llm.generate(PROMPT, sampling_params)
+print(filling)
 traceback.print_exec()
 # time.sleep(2)
 
