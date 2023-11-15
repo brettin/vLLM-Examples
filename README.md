@@ -5,8 +5,8 @@
  or
 
  	import os
-  	os.environ['HF_DATASETS_CACHE'] = '/lambda_stor/homes/brettin/.cache'
-   	os.environ['TRANSFORMERS_CACHE'] = '/lambda_stor/homes/brettin/.cache'
+  	os.environ['HF_DATASETS_CACHE'] = '/rbscratch/brettin/.cache'
+   	os.environ['TRANSFORMERS_CACHE'] = '/rbscratch/homes/brettin/.cache'
 
 ### To start a ray cluster for parallel inferencing
 The default port is 6379 and can be modified with the --port option.
