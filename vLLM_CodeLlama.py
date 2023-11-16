@@ -5,14 +5,11 @@ traceback.print_exc()
 import torch
 
 import os
-os.environ['HF_DATASETS_CACHE'] = '/rbscratch/brettin/.cache'
-os.environ['TRANSFORMERS_CACHE'] = '/rbscratch/brettin/.cache'
+os.environ['HF_DATASETS_CACHE']  = '/gpustor/brettin/.cache'
+os.environ['TRANSFORMERS_CACHE'] = '/gpustor/brettin/.cache'
 
 for i in range(torch.cuda.device_count()):
    print(torch.cuda.get_device_properties(i).name)
-
-#import ray
-#ray.init( logging_level='DEBUG')
 
 #llm = LLM(model="codellama/CodeLlama-34b-Instruct-hf", tensor_parallel_size=2, swap_space=1 )
 # llm = LLM(model="codellama/CodeLlama-34b-Instruct-hf", tensor_parallel_size=2)
@@ -31,7 +28,11 @@ traceback.print_exc()
 sampling_params = SamplingParams(temperature=0.8, top_p=0.95)
 filling = llm.generate(PROMPT, sampling_params)
 print(filling)
-traceback.print_exec()
+for output in [filling]:
+    print(output[0].prompt)
+    print(output[0].outputs)
+
+traceback.print_exc()
 # time.sleep(2)
 
 
