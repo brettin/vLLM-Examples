@@ -1,0 +1,20 @@
+for n in $(seq 0 999) ; do
+
+	curl http://localhost:8000/generate -s -o $n.log   -d '{
+        	"prompt": "A detailed description of the biochemical function 5-(hydroxymethyl)furfural/furfural transporter is",
+        	"use_beam_search": true,
+		"n": 4,
+        	"temperature": 0.0, "max_tokens": 512 
+	}' &
+
+	pids[${i}]=$!
+
+done
+
+
+# wait for all pids
+for pid in ${pids[*]}; do
+    wait $pid
+    echo "DONE $pid"
+done
+
