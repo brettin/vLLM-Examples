@@ -1,0 +1,29 @@
+### Instructions for running falcon-180B-chat
+
+
+### This works on a fresh login from uic-bastion.
+### Start the ray cluster
+source ./env.sh
+conda activate vLLM
+cd /gpustor/brettin/vLLM-Examples/
+ray start --head  --num-cpus 64 --num-gpus 8
+cd ray-test
+python ray-simple.py
+cd ..
+
+### Start the vllm server
+python -m vllm.entrypoints.api_server --model tiiuae/falcon-180B-chat --tensor-parallel-size 8 --host localhost
+
+# If successful, you will see this line when the server is ready-
+# INFO:     Uvicorn running on http://localhost:8000 (Press CTRL+C to quit)
+
+### Run curl clients
+# fresh dlogin from uic-bastion.
+
+# https and http proxies need to be unset.
+cd gpustor/vLLM-Examples/
+rm .log
+time ./test.curl.simple 
+
+# Look at the results.
+cat .log
