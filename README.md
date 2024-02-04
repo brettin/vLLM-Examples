@@ -57,30 +57,6 @@ The default port is 6379 and can be modified with the --port option.
 	pip install ray
 
 
- ### Ray Log Snippets
-
-	INFO 02-02 07:57:28 llm_engine.py:70] Initializing an LLM engine with config: mo
-	del='mistralai/Mistral-7B-v0.1', tokenizer='mistralai/Mistral-7B-v0.1', tokenize
-	r_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dt
-	ype=torch.bfloat16, max_seq_len=32768, download_dir=None, load_format=auto, tens
-	or_parallel_size=16, quantization=None, enforce_eager=False, seed=0)
-
-	(raylet, ip=140.221.79.201) [2024-02-02 08:12:38,595 E 1113478 1113510] (
-	raylet) file_system_monitor.cc:111: /tmp/ray/session_2024-02-02_07-50-38_136817_
-	3697590 is over 95% full, available space: 2376220672; capacity: 1888426192896. 
-	Object creation will fail if spilling is required. [repeated 2x across clust
-	er]
-
-
-	ray start --head --port 6379 --num-cpus 64 --num-gpus 8
-
-To add another node to this Ray cluster, run
-
-	ray start --address='140.221.79.202:6379' --num-cpus 64 --num-gpus 8
-
- 	python -m vllm.entrypoints.api_server --model mistralai/Mistral-7B-v0.1 --tensor-parallel-size 8 --host localhost --port 8000
-
-
 ### Starting the ray cluster and the vllm api_server.
 
 1. Start the head node
