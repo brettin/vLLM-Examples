@@ -8,12 +8,20 @@
   	os.environ['HF_DATASETS_CACHE'] = '/rbscratch/brettin/.cache'
    	os.environ['TRANSFORMERS_CACHE'] = '/rbscratch/homes/brettin/.cache'
 
-### To start a ray cluster for parallel inferencing
+### Basics to start a ray cluster for parallel inferencing
 The default port is 6379 and can be modified with the --port option.
 
 	ray start --head
 	ray start --address='140.221.84.8:6379'    # the address and port are
  	ray start --address='140.221.84.8:6379'    # this starts a second worker
+
+### Starting the ray cluster and the vllm api_server.
+
+Start the head node, add another node to this Ray cluster, and start the vllm api server.
+
+	ray start --head --port 6379 --num-cpus 64 --num-gpus 8
+	ray start --address='140.221.79.202:6379' --num-cpus 64 --num-gpus 8
+ 	python -m vllm.entrypoints.api_server --model mistralai/Mistral-7B-v0.1 --tensor-parallel-size 8 --host localhost --port 8000
 
 ### Example
 
@@ -57,23 +65,12 @@ The default port is 6379 and can be modified with the --port option.
 	pip install ray
 
 
-### Starting the ray cluster and the vllm api_server.
 
-1. Start the head node
 
-	ray start --head --port 6379 --num-cpus 64 --num-gpus 8
-
-2. To add another node to this Ray cluster, run
-
-	ray start --address='140.221.79.202:6379' --num-cpus 64 --num-gpus 8
-
-3. Start the vllm api server
- 
- 	python -m vllm.entrypoints.api_server --model mistralai/Mistral-7B-v0.1 --tensor-parallel-size 8 --host localhost --port 8000
 
 ### Thruput
 
-On the ray head node, with 8 GPUs
+1 node, 8 GPUs
 tensor_parallel = 8
 
 	n = 100
@@ -83,8 +80,7 @@ tensor_parallel = 8
 	user	0m0.290s
 	sys	0m0.343s
 
- On the ray head node, with 8 GPUs
- On the worker node, with 8 GPUs
+ 2 nodes, 16 GPUS
  tensor_parallel = 16
 
 	n = 100
@@ -93,6 +89,53 @@ tensor_parallel = 8
 	real	4m30.549s
 	user	0m0.272s
 	sys	0m0.223s
+
+#### Experiment 1
+
+ 
+ 2 nodes 16 GPUs
+ tensor_parallel = 8
+
+ 	n = 1
+  	Sun 04 Feb 2024 02:19:15 PM CST
+
+	real	0m7.743s
+	user	0m0.005s
+	sys	0m0.003s
+
+ 2 nodes, 16 GPUs
+ tensor_parallel = 8
+ Note: All jobs ran on the head node GPUs only.
+
+	n = 63
+	Sun 04 Feb 2024 02:24:21 PM CST
+	
+	real	2m7.174s
+	user	0m0.047s
+	sys	0m0.039s
+
+2 nodes, 16 GPUs
+tensor_parallel = 16
+
+	n = 1
+	Sun 04 Feb 2024 02:34:24 PM CST
+	
+	real	0m11.886s
+	user	0m0.009s
+	sys	0m0.006s
+
+2 nodes, 16 GPUs
+tensor_parallel = 16
+n = 64
+
+n = 64
+Sun 04 Feb 2024 02:39:49 PM CST
+
+real	2m50.721s
+user	0m0.125s
+sys	0m0.123s
+
+
 
 
 ### Ray Log Snippets
