@@ -1,7 +1,7 @@
 **Table of content:**
 - [Managing Model Weight Files](#model_weights)
-- [Starting the Ray Cluster](#ray_start)
-- [Starting the vLLM Server](#vllm_server_start)
+- [Basics to start a ray cluster for parallel inferencing](#ray_start)
+- [Starting the ray cluster and the vllm api_server](#vllm_server_start)
 - [Example Inferencing](#example)
 - [Pre-installation on a back end polaris node](#pre_install_polaris)
 - [Installation](#installation)
