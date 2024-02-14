@@ -57,13 +57,25 @@ Start the head node, add another node to this Ray cluster, and start the vllm ap
 
 ### Installation:
 
-	conda create --prefix /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM python=3.11
+	# While this worked previously, it seems not to anymore:
+ 	# conda create --prefix /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM python=3.11
+	conda create --prefix /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM python=3.9
 	conda activate /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM
 	pip install git+https://github.com/huggingface/transformers.git@main accelerate
 	pip install git+https://github.com/vllm-project/vllm.git@main
 	pip install jupyter
 	pip install ray
 
+
+	# While this worked previously, it seems not to anymore:
+ 	# conda create --prefix /rbscratch/brettin/conda_envs/vLLM python=3.11
+	conda create --prefix /rbscratch/brettin/conda_envs/vLLM python=3.9
+ 	conda activate /rbscratch/brettin/conda_envs/vLLM
+  	pip install vLLM
+
+	# Installing collected packages: sentencepiece, quantile-python, ninja, mpmath, websockets, uvloop, urllib3, typing-extensions, tqdm, sympy, sniffio, safetensors, rpds-py, regex, pyyaml, python-dotenv, pynvml, psutil, protobuf, packaging, orjson, nvidia-nvtx-cu12, nvidia-nvjitlink-cu12, nvidia-nccl-cu12, nvidia-curand-cu12, nvidia-cufft-cu12, nvidia-cuda-runtime-cu12, nvidia-cuda-nvrtc-cu12, nvidia-cuda-cupti-cu12, nvidia-cublas-cu12, numpy, networkx, msgpack, MarkupSafe, idna, httptools, h11, fsspec, frozenlist, filelock, exceptiongroup, click, charset-normalizer, certifi, attrs, annotated-types, uvicorn, triton, requests, referencing, pydantic-core, nvidia-cusparse-cu12, nvidia-cudnn-cu12, jinja2, anyio, aiosignal, aioprometheus, watchfiles, starlette, pydantic, nvidia-cusolver-cu12, jsonschema-specifications, huggingface-hub, torch, tokenizers, jsonschema, fastapi, xformers, transformers, ray, vLLM
+
+	pip install accelerate
 
 
 
