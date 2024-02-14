@@ -1,3 +1,13 @@
+**Table of content:**
+- [Managing Model Weight Files](#model_weights)
+- [Starting the Ray Cluster](#ray_start)
+- [Starting the vLLM Server](#vllm_server_start)
+- [Example Inferencing](#example)
+- [Pre-installation on a back end polaris node](#pre_install_polaris)
+- [Installation](#installation)
+
+
+<a href="model_weights"></a>
 ### To manage where model weights are downloaded to
 	export HF_DATASETS_CACHE=/rbscratch/brettin/.cache
 	export TRANSFORMERS_CACHE=/rbscratch/brettin/.cache
@@ -8,6 +18,8 @@
   	os.environ['HF_DATASETS_CACHE'] = '/rbscratch/brettin/.cache'
    	os.environ['TRANSFORMERS_CACHE'] = '/rbscratch/homes/brettin/.cache'
 
+
+<a href="ray_start"></a>
 ### Basics to start a ray cluster for parallel inferencing
 The default port is 6379 and can be modified with the --port option.
 
@@ -15,6 +27,8 @@ The default port is 6379 and can be modified with the --port option.
 	ray start --address='140.221.84.8:6379'    # the address and port are
  	ray start --address='140.221.84.8:6379'    # this starts a second worker
 
+
+<a href="vllm_server_start"></a>
 ### Starting the ray cluster and the vllm api_server.
 
 Start the head node, add another node to this Ray cluster, and start the vllm api server.
@@ -23,6 +37,8 @@ Start the head node, add another node to this Ray cluster, and start the vllm ap
 	ray start --address='140.221.79.202:6379' --num-cpus 64 --num-gpus 8
  	python -m vllm.entrypoints.api_server --model mistralai/Mistral-7B-v0.1 --tensor-parallel-size 8 --host localhost --port 8000
 
+
+<a href="example"></a>
 ### Example
 
 	from vllm import LLM
@@ -40,14 +56,12 @@ Start the head node, add another node to this Ray cluster, and start the vllm ap
 		print (generated_text)
 
 
-
+<a href="pre_install_polaris></a>
 ### Pre-installation on a back end polaris node:
 	module load conda
 	https_proxy=http://proxy.alcf.anl.gov:3128
 	http_proxy=http://proxy.alcf.anl.gov:3128
 	conda activate /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM
-
-
 
 
 ### Installed at -
@@ -56,6 +70,7 @@ Start the head node, add another node to this Ray cluster, and start the vllm ap
   	/rbscratch/brettin/conda_envs
 
 
+<a href="installation"></a>
 ### Installation:
 
 	# While this worked previously, it seems not to anymore:
