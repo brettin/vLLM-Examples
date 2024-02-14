@@ -53,6 +53,7 @@ Start the head node, add another node to this Ray cluster, and start the vllm ap
 ### Installed at -
 	/lus/grand/projects/CSC249ADOA01/conda_envs/vLLM
  	/lambda_stor/software/conda_envs/vLLM
+  	/rbscratch/brettin/conda_envs
 
 
 ### Installation:
