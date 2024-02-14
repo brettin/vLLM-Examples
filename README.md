@@ -7,7 +7,7 @@
 - [Installation](#installation)
 
 
-<a href="model_weights"></a>
+<a id="model_weights"></a>
 ### To manage where model weights are downloaded to
 	export HF_DATASETS_CACHE=/rbscratch/brettin/.cache
 	export TRANSFORMERS_CACHE=/rbscratch/brettin/.cache
@@ -19,7 +19,7 @@
    	os.environ['TRANSFORMERS_CACHE'] = '/rbscratch/homes/brettin/.cache'
 
 
-<a href="ray_start"></a>
+<a id="ray_start"></a>
 ### Basics to start a ray cluster for parallel inferencing
 The default port is 6379 and can be modified with the --port option.
 
@@ -28,7 +28,7 @@ The default port is 6379 and can be modified with the --port option.
  	ray start --address='140.221.84.8:6379'    # this starts a second worker
 
 
-<a href="vllm_server_start"></a>
+<a id="vllm_server_start"></a>
 ### Starting the ray cluster and the vllm api_server.
 
 Start the head node, add another node to this Ray cluster, and start the vllm api server.
@@ -38,7 +38,7 @@ Start the head node, add another node to this Ray cluster, and start the vllm ap
  	python -m vllm.entrypoints.api_server --model mistralai/Mistral-7B-v0.1 --tensor-parallel-size 8 --host localhost --port 8000
 
 
-<a href="example"></a>
+<a id="example"></a>
 ### Example
 
 	from vllm import LLM
@@ -56,7 +56,7 @@ Start the head node, add another node to this Ray cluster, and start the vllm ap
 		print (generated_text)
 
 
-<a href="pre_install_polaris></a>
+<a id="pre_install_polaris></a>
 ### Pre-installation on a back end polaris node:
 	module load conda
 	https_proxy=http://proxy.alcf.anl.gov:3128
