@@ -37,6 +37,9 @@ Start the head node, add another node to this Ray cluster, and start the vllm ap
 	ray start --address='140.221.79.202:6379' --num-cpus 64 --num-gpus 8
  	python -m vllm.entrypoints.api_server --model mistralai/Mistral-7B-v0.1 --tensor-parallel-size 8 --host localhost --port 8000
 
+If you want to start the ray cluster but only use certian GPUs, set CUDA_VISIBLE_DEVICES 
+
+	CUDA_VISIBLE_DEVICES="0,1,2,3" ray start --head --port 6379 --num-cpus 64 --num-gpus 8
 
 <a id="example"></a>
 ### Example
