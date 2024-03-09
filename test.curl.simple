@@ -1,4 +1,4 @@
-curl http://localhost:8000/generate -s -o $n.log   -d '{
+curl http://localhost:8000/generate -s -o test.curl.simple.out -d '{
        	"prompt": "A detailed description of the biochemical function 5-(hydroxymethyl)furfural/furfural transporter is",
        	"use_beam_search": true,
 	"n": 4,
