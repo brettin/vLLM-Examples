@@ -1,0 +1,31 @@
+First, polaris is running 11.8, not 12.1 CUDA. This will create problems.
+We will try building vLLM from scratch first. This doesn't work because
+the latest version won't build on 11.8.
+
+# To prepare for the installation
+mkdir /lus/grand/projects/CSC249ADOA01/brettin/.cache/huggingface
+mkdir ~/.cache
+cd ~/.cache
+ln -s  /lus/grand/projects/CSC249ADOA01/brettin/.cache/huggingface huggingface
+
+# To prepare the conda environment
+module load conda
+conda create --prefix /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM python=3.9
+conda activate /lus/grand/projects/CSC249ADOA01/conda_envs/vLLM
+
+# Convoluted installation for cuda 11.8
+export VLLM_VERSION=0.2.6
+export PYTHON_VERSION=311
+pip install https://github.com/vllm-project/vllm/releases/download/v${VLLM_VERSION}/vllm-${VLLM_VERSION}+cu118-cp${PYTHON_VERSION}-cp${PYTHON_VERSION}-manylinux1_x86_64.whl
+pip uninstall torch -y
+pip install torch==2.1.2 --index-url https://download.pytorch.org/whl/cu118
+pip uninstall xformers -y
+pip install xformers==0.0.23 --index-url https://download.pytorch.org/whl/cu118
+module load gcc/11.2.0 
+pip install megablocks
+
+
+# to run the tests
+
+python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 4 --host localhost
+
