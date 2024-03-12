@@ -12,9 +12,9 @@ python ray-simple.py
 cd ..
 
 ### Start the vllm server
-python -m vllm.entrypoints.api_server --model tiiuae/falcon-180B-chat --tensor-parallel-size 8 --host localhost
-python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost
-python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost
+nohup python -m vllm.entrypoints.api_server --model tiiuae/falcon-180B-chat --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.log &
+nohup python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.log &
+nohup python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.openai.log &
 
 # If successful, you will see this line when the server is ready-
 # INFO:     Uvicorn running on http://localhost:8000 (Press CTRL+C to quit)
