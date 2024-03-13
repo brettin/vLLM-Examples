@@ -7,16 +7,18 @@ source ./env.sh
 conda activate vLLM
 cd /gpustor/brettin/vLLM-Examples/
 ray start --head  --num-cpus 64 --num-gpus 8
+
+# Optional, to test that ray is properly running
 cd ray-test
 python ray-simple.py
 cd ..
 
 ### Start the vllm server
-nohup python -m vllm.entrypoints.api_server --model tiiuae/falcon-180B-chat --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.log &
-nohup python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.log &
+# nohup python -m vllm.entrypoints.api_server --model tiiuae/falcon-180B-chat --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.log &
+# nohup python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.log &
 nohup python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.openai.log &
 
-# If successful, you will see this line when the server is ready-
+# If successful, you will see this line when the server is ready- it takes a minute or so to load a model.
 # INFO:     Uvicorn running on http://localhost:8000 (Press CTRL+C to quit)
 
 ### Run curl clients
@@ -24,8 +26,8 @@ nohup python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7
 
 # https and http proxies need to be unset.
 cd gpustor/vLLM-Examples/
-rm .log
+rm *.log
 time ./test.curl.simple 
 
 # Look at the results.
-cat .log
+cat *.log
