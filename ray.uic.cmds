@@ -1,3 +1,5 @@
+### To start the server
+
 export HTTP_PROXY="http://192.168.100.1:3128"
 export HTTPS_PROXY="http://192.168.100.1:3128"
 export http_proxy="http://192.168.100.1:3128"
@@ -18,6 +20,13 @@ ray start --head --num-cpus 32 --num-gpus 4
 # --tensor-parallel-size 4 should match ray --num-gpus if serving one model
 nohup python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 4 --host localhost --port 8001 2>&1 > vllm.entrypoint.openai.log &
 
+# it can take a minute or more to start the vllm.entrypoint, particularly if model weights are being downloaded.
+tail -f vllm.entrypoint.openai.log
+
+
+### To run the client
+
+conda activate /gpustor/brettin/anaconda3/envs/vLLM
 
 # you have to unset the http procies because vllm is using http locally
 unset HTTP_PROXY
