@@ -40,6 +40,9 @@ python test.python.openai.py --port 8001
 # Watch the log for the api_server to start
 tail -f vllm.entrypoints.api_server.log
 
+
+### To stop the server
+
 # I have not found an easy way to stop the python command
 ps -ef | grep python | grep entry
 kill -9 pid
