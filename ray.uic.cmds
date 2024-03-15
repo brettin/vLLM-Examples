@@ -11,12 +11,13 @@ export TRANSFORMERS_CACHE='/gpustor/brettin/.cache'
 conda activate /gpustor/brettin/anaconda3/envs/vLLM
 
 # --num-gpus needs to be a minimum of 4 for Mixtral-8x7B-Instruct-v0.1
+# you can set CUDA_VISIBLE_DEVICES before starting ray if you want to
+export CUDA_VISIBLE_DEVICES=4,5,6,7
 ray start --head --num-cpus 32 --num-gpus 4
 
 # --tensor-parallel-size 4 should match ray --num-gpus if serving one model
-# nohup python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 4 --host localhost --port 8001 2>&1 > vllm.entrypoints.api_server.log &
+nohup python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 4 --host localhost --port 8001 2>&1 > vllm.entrypoint.openai.log &
 
-nohup python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 4 --host localhost 2>&1 > vllm.entrypoint.openai.log &
 
 # you have to unset the http procies because vllm is using http locally
 unset HTTP_PROXY
@@ -25,11 +26,10 @@ unset HTTPS_PROXY
 unset https_proxy
 
 # run a test
-python test.
+python test.python.openai.py --port 8001
 
 # Watch the log for the api_server to start
 tail -f vllm.entrypoints.api_server.log
-
 
 # I have not found an easy way to stop the python command
 ps -ef | grep python | grep entry
