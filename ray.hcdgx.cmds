@@ -30,9 +30,9 @@ cd ..
 # tested on hcdgx2
 #python -m vllm.entrypoints.api_server --model upstage/SOLAR-10.7B-Instruct-v1.0 --dtype float16 --tensor-parallel-size 8 --host localhost 
 
-python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --dtype float16 --tensor-parallel-size 8 --host localhost
+# python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --dtype float16 --tensor-parallel-size 8 --host localhost
 
-#python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --dtype float16 --tensor-parallel-size 8 --host localhost
+python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --dtype float16 --tensor-parallel-size 8 --host localhost
 # If successful, you will see this line when the server is ready- it takes a minute or so to load a model.
 # INFO:     Uvicorn running on http://localhost:8000 (Press CTRL+C to quit)
 
