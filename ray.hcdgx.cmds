@@ -1,0 +1,49 @@
+### Instructions for running falcon-180B-chat
+
+VLLM_EXAMPLES="/raid/brettin/vLLM-Examples"
+### This works on a fresh login from uic-bastion.
+### Start the ray cluster
+source ./env.hcdgx.sh
+cd ${VLLM_EXAMPLES}
+
+ray start --head  --num-cpus 64 --num-gpus 8
+
+# Optional, to test that ray is properly running
+cd ray-test
+python ray-simple.py
+cd ..
+
+
+### Start the vllm server
+
+# Set RAY_DEDUP_LOGS=0 to disable log deduplication
+#
+# nohup python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.openai.log &
+# nohup python -m vllm.entrypoints.api_server --model tiiuae/falcon-180B-chat --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.log &
+# nohup python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.log &
+
+# modify the vllm util file
+# vi /homes/brettin/anaconda3/envs/vLLM/lib/python3.9/site-packages/vllm/utils.py
+# get_ip()
+# 	return "192.168.1.100"
+
+# tested on hcdgx2
+#python -m vllm.entrypoints.api_server --model upstage/SOLAR-10.7B-Instruct-v1.0 --dtype float16 --tensor-parallel-size 8 --host localhost 
+
+python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --dtype float16 --tensor-parallel-size 8 --host localhost
+
+#python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --dtype float16 --tensor-parallel-size 8 --host localhost
+# If successful, you will see this line when the server is ready- it takes a minute or so to load a model.
+# INFO:     Uvicorn running on http://localhost:8000 (Press CTRL+C to quit)
+
+### Run curl clients
+# fresh dlogin from uic-bastion.
+
+# https and http proxies need to be unset.
+cd ${VLLM_EXAMPLES}
+
+rm *.log
+time ./test.curl.simple 
+
+# Look at the results.
+cat *.log
