@@ -29,13 +29,7 @@ pip install megablocks
 source env.polaris.sh
 module load cudatoolkit-standalone/11.8.0
 
-# start ray
-# ray start --num-cpus 64 --num-gpus 4 --head
-# ray start --num-cpus 64 --num-gpus 4 --address 
-
-# Another option would be to call ray.init on each node
-#
-# This worked
+# This worked in an interactive job with 2 nodes
 ray start --num-cpus 32 --num-gpus 4 --head --plasma-store-socket-name /tmp/plasma_store-socket.$$.sock --raylet-socket-name /tmp/raylet-socket.$$.sock
 
 # Now try this a second node. ADDRESS is the ip of the ray head node.
