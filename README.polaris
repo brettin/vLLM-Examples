@@ -42,7 +42,7 @@ python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0
 # python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 4 --host localhost
 
 # And test the vllm entrypoint api_server
-time ./test.curl.nobeam.maxtokens2056
+time ./test.curl.nobeam.maxtokens2056 256
 
 
 # Showing GPU utilization on two nodes, x3006c0s19b1n0 and x3006c0s31b0n0
