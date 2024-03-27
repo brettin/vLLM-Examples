@@ -26,6 +26,87 @@ pip install megablocks
 
 
 # to run the tests
+source env.polaris.sh
+module load cudatoolkit-standalone/11.8.0
 
-python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 4 --host localhost
+# start ray
+# ray start --num-cpus 64 --num-gpus 4 --head
+# ray start --num-cpus 64 --num-gpus 4 --address 
 
+# Another option would be to call ray.init on each node
+#
+# This worked
+ray start --num-cpus 32 --num-gpus 4 --head --plasma-store-socket-name /tmp/plasma_store-socket.$$.sock --raylet-socket-name /tmp/raylet-socket.$$.sock
+
+# Now try this a second node. ADDRESS is the ip of the ray head node.
+ray start --num-cpus 32 --num-gpus 4 --address ${ADDRESS} --plasma-store-socket-name /tmp/plasma_store-socket.$$.sock --raylet-socket-name /tmp/raylet-socket.$$.sock
+
+# Now launch this on the head node
+# python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 4 --host localhost
+
+python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost
+
+# And test the vllm entrypoint api_server
+time ./test.curl.nobeam.maxtokens2056
+
+
+# Showing GPU utilization on two nodes, x3006c0s19b1n0 and x3006c0s31b0n0
+brettin@x3006c0s19b1n0:~> nvidia-smi
+Tue Mar 26 23:16:47 2024       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 520.61.05    Driver Version: 520.61.05    CUDA Version: 11.8     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  NVIDIA A100-SXM...  On   | 00000000:07:00.0 Off |                    0 |
+| N/A   36C    P0   122W / 400W |  36193MiB / 40960MiB |     75%      Default |
+|                               |                      |             Disabled |
++-------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100-SXM...  On   | 00000000:46:00.0 Off |                    0 |
+| N/A   37C    P0   118W / 400W |  36265MiB / 40960MiB |     78%      Default |
+|                               |                      |             Disabled |
++-------------------------------+----------------------+----------------------+
+|   2  NVIDIA A100-SXM...  On   | 00000000:85:00.0 Off |                    0 |
+| N/A   38C    P0   125W / 400W |  36265MiB / 40960MiB |     71%      Default |
+|                               |                      |             Disabled |
++-------------------------------+----------------------+----------------------+
+|   3  NVIDIA A100-SXM...  On   | 00000000:C7:00.0 Off |                    0 |
+| N/A   38C    P0    77W / 400W |  36193MiB / 40960MiB |     69%      Default |
+|                               |                      |             Disabled |
++-------------------------------+----------------------+----------------------+
+
+brettin@x3006c0s31b0n0~> nvidia-smi
+Tue Mar 26 23:17:37 2024       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 520.61.05    Driver Version: 520.61.05    CUDA Version: 11.8     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  NVIDIA A100-SXM...  On   | 00000000:07:00.0 Off |                    0 |
+| N/A   38C    P0   121W / 400W |  36193MiB / 40960MiB |     60%      Default |
+|                               |                      |             Disabled |
++-------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100-SXM...  On   | 00000000:46:00.0 Off |                    0 |
+| N/A   38C    P0   123W / 400W |  36265MiB / 40960MiB |     59%      Default |
+|                               |                      |             Disabled |
++-------------------------------+----------------------+----------------------+
+|   2  NVIDIA A100-SXM...  On   | 00000000:85:00.0 Off |                    0 |
+| N/A   36C    P0    89W / 400W |  36265MiB / 40960MiB |     56%      Default |
+|                               |                      |             Disabled |
++-------------------------------+----------------------+----------------------+
+|   3  NVIDIA A100-SXM...  On   | 00000000:C7:00.0 Off |                    0 |
+| N/A   42C    P0    98W / 400W |  36193MiB / 40960MiB |     55%      Default |
+|                               |                      |             Disabled |
++-------------------------------+----------------------+----------------------+
+
+
+# What don't I know:
+# 1. If we get better performance running one head node or num_nodes head nodes.
+# 	Common sense tells me that internode communication will cost time.
+#
+
+# So, we'd do an mpiexec and pass socket names to init.
