@@ -36,9 +36,10 @@ ray start --num-cpus 32 --num-gpus 4 --head --plasma-store-socket-name /tmp/plas
 ray start --num-cpus 32 --num-gpus 4 --address ${ADDRESS} --plasma-store-socket-name /tmp/plasma_store-socket.$$.sock --raylet-socket-name /tmp/raylet-socket.$$.sock
 
 # Now launch this on the head node
-# python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 4 --host localhost
-
 python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost
+
+# For testing just one node
+# python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 4 --host localhost
 
 # And test the vllm entrypoint api_server
 time ./test.curl.nobeam.maxtokens2056
