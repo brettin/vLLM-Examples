@@ -3,14 +3,17 @@ from openai import OpenAI
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--port", type=int, default=8000,
-                    help="display a square of a given number")
+                    help="port number")
+parser.add_argument("--host", type=str, default="localhost",
+		    help="host name")
 
 args = parser.parse_args()
+print(f'using host: {args.host}')
 print(f'using port: {args.port}')
 
 # Set OpenAI's API key and API base to use vLLM's API server.
 openai_api_key = "EMPTY"
-openai_api_base = f"http://localhost:{args.port}/v1"
+openai_api_base = f"http://{args.host}:{args.port}/v1"
 
 client = OpenAI(
     api_key=openai_api_key,
