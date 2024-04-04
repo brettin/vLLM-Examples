@@ -6,10 +6,13 @@ parser.add_argument("--port", type=int, default=8000,
                     help="port number")
 parser.add_argument("--host", type=str, default="localhost",
 		    help="host name")
+parser.add_argument("--model", type=str, default="mistralai/Mixtral-8x7B-Instruct-v0.1",
+                    help="repo/model")
 
 args = parser.parse_args()
 print(f'using host: {args.host}')
 print(f'using port: {args.port}')
+print(f'using model: {args.model}')
 
 # Set OpenAI's API key and API base to use vLLM's API server.
 openai_api_key = "EMPTY"
@@ -22,7 +25,7 @@ client = OpenAI(
 
 # sampling_params = SamplingParams({"prompt_logprobs": 1, "logprobs": 1))
 chat_response = client.chat.completions.create(
-    model="mistralai/Mixtral-8x7B-Instruct-v0.1",
+    model=args.model,
     # logprobs=1,
     # top_logprobs=1,
     messages=[
