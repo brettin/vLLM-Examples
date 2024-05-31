@@ -41,6 +41,10 @@ If you want to start the ray cluster but only use certian GPUs, set CUDA_VISIBLE
 
 	CUDA_VISIBLE_DEVICES="0,1,2,3" ray start --head --port 6379 --num-cpus 64 --num-gpus 8
 
+To run on a v100 that doesn't support bf16
+
+	python -m vllm.entrypoints.openai.api_server --api-key xxxx --model meta-llama/Meta-Llama-3-8B-Instruct --dtype float16 --tensor-parallel-size 8 --host localhost --port 6379
+ 
 <a id="example"></a>
 ### Example
 
