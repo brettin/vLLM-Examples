@@ -16,11 +16,11 @@ cd ..
 ### Start the vllm server
 python -m vllm.entrypoints.openai.api_server --model mistral-community/Mixtral-8x22B-v0.1 --tensor-parallel-size 8 --host localhost --max-model-len 2096 --enforce-eager --gpu-memory-utilization 0.98
 
-nohup python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.openai.log &
+nohup python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoints.openai.api_server.log &
 # nohup python -m vllm.entrypoints.api_server --model tiiuae/falcon-180B-chat --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.log &
 # nohup python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.log &
 
-nohup python -m vllm.entrypoints.openai.api_server --model mistral-community/Mixtral-8x22B-v0.1 --tensor-parallel-size 8 --host localhost --max-model-len 2096 --enforce-eager --gpu-memory-utilization 0.98 > vllm.entrypoint.openai.log 2>&1 &
+nohup python -m vllm.entrypoints.openai.api_server --model mistral-community/Mixtral-8x22B-v0.1 --tensor-parallel-size 8 --host localhost --max-model-len 2096 --enforce-eager --gpu-memory-utilization 0.98 > vllm.entrypoints.openai.api_server.log 2>&1 &
 
 nohup python -m vllm.entrypoints.openai.api_server --model meta-llama/Meta-Llama-3-8B-Instruct --tensor-parallel-size 8 --host localhost >> vllm.entrypoints.openai.api_server.log 2>&1 &
 
