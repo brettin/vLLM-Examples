@@ -64,6 +64,9 @@ With Lora:
 |    6   N/A  N/A   3650810      C   ray::RayWorkerWrapper                     37556MiB |
 |    7   N/A  N/A   3650928      C   ray::RayWorkerWrapper                     37124MiB |
 
+# to run a 256K context window
+nohup python -m vllm.entrypoints.openai.api_server --model gradientai/Llama-3-70B-Instruct-Gradient-262k --tensor-parallel-size 8 --host 127.0.0.1 --port 7777 > vllm.entrypoints.openai.api_server.log 2>&1 &
+
 # If successful, you will see this line when the server is ready- it takes a minute or so to load a model.
 # INFO:     Uvicorn running on http://localhost:8000 (Press CTRL+C to quit)
 
