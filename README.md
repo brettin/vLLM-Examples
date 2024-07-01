@@ -5,7 +5,7 @@
 - [Example Inferencing](#example)
 - [Pre-installation on a back end polaris node](#pre_install_polaris)
 - [Installation](#installation)
-- [Tunnels](#tunnells)
+- [Tunnels](#tunnels)
 
 
 <a id="model_weights"></a>
