@@ -104,19 +104,21 @@ To run on a v100 that doesn't support bf16
 <a id="tunnels"></a>
 ### Tunneling
 
-# This needs to be run minimally from an Argonne IP. 
-# This has been tested on rbdgx1.
+This needs to be run minimally from an Argonne IP. 
+This has been tested on rbdgx1.
 
-# Establish a "no shell" connection
- 1999  ssh -fNL 8000:localhost:8000 <vllm server>
+	# Establish a "no shell" connection
+ 	ssh -fNL 8000:localhost:8000 <vllm server>
 
-# Activate your environment
- 2001  cd /rbscratch/brettin/vLLM-Examples/
- 2002  source env.sh
+Activate your environment
 
-# Run a query
- 2003  python ./test.python.openai.py --help
- 2004  python ./test.python.openai.py --port 8000 --host localhost --model gradientai/Llama-3-70B-Instruct-Gradient-262k
+	cd /rbscratch/brettin/vLLM-Examples/
+	source env.sh
+
+Run a query
+
+	python ./test.python.openai.py --help
+	python ./test.python.openai.py --port 8000 --host localhost --model gradientai/Llama-3-70B-Instruct-Gradient-262k
 
 
 ### Thruput
