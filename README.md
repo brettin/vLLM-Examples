@@ -5,6 +5,7 @@
 - [Example Inferencing](#example)
 - [Pre-installation on a back end polaris node](#pre_install_polaris)
 - [Installation](#installation)
+- [Tunnels](#tunnels)
 
 
 <a id="model_weights"></a>
@@ -100,7 +101,24 @@ To run on a v100 that doesn't support bf16
 
 	pip install accelerate
 
+<a id="tunnels"></a>
+### Tunneling
 
+This needs to be run minimally from an Argonne IP. 
+This has been tested on rbdgx1.
+
+	# Establish a "no shell" connection
+ 	ssh -fNL 8000:localhost:8000 <vllm server>
+
+Activate your environment
+
+	cd /rbscratch/brettin/vLLM-Examples/
+	source env.sh
+
+Run a query
+
+	python ./test.python.openai.py --help
+	python ./test.python.openai.py --port 8000 --host localhost --model gradientai/Llama-3-70B-Instruct-Gradient-262k
 
 
 ### Thruput

@@ -14,9 +14,58 @@ python ray-simple.py
 cd ..
 
 ### Start the vllm server
-nohup python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.openai.log &
+python -m vllm.entrypoints.openai.api_server --model mistral-community/Mixtral-8x22B-v0.1 --tensor-parallel-size 8 --host localhost --max-model-len 2096 --enforce-eager --gpu-memory-utilization 0.98
+
+nohup python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoints.openai.api_server.log &
 # nohup python -m vllm.entrypoints.api_server --model tiiuae/falcon-180B-chat --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.log &
 # nohup python -m vllm.entrypoints.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoint.log &
+
+nohup python -m vllm.entrypoints.openai.api_server --model mistral-community/Mixtral-8x22B-v0.1 --tensor-parallel-size 8 --host localhost --max-model-len 2096 --enforce-eager --gpu-memory-utilization 0.98 > vllm.entrypoints.openai.api_server.log 2>&1 &
+
+nohup python -m vllm.entrypoints.openai.api_server --model meta-llama/Meta-Llama-3-8B-Instruct --tensor-parallel-size 8 --host localhost >> vllm.entrypoints.openai.api_server.log 2>&1 &
+
+## to run a finetuned model (while this seemed to work, I don't think the request invokded the lora layers. This needs further testing.
+nohup python -m vllm.entrypoints.openai.api_server --model meta-llama/Meta-Llama-3-8B-Instruct --enable-lora --lora-modules sql-lora=/rbscratch/chia/TMP_adapter_Meta-Llama-3-8B-Instruct_1.0 --tensor-parallel-size 8 --host localhost >> vllm.entrypoints.openai.api_server.log 2>&1 &
+
+Without Lora:
+|    1   N/A  N/A   3642675      C   ray::RayWorkerWrapper                     36030MiB |
+|    2   N/A  N/A   3642897      C   ray::RayWorkerWrapper                     36030MiB |
+|    3   N/A  N/A   3643066      C   ray::RayWorkerWrapper                     36030MiB |
+|    4   N/A  N/A   3643184      C   ray::RayWorkerWrapper                     36030MiB |
+|    5   N/A  N/A   3643303      C   ray::RayWorkerWrapper                     36030MiB |
+|    6   N/A  N/A   3643421      C   ray::RayWorkerWrapper                     36030MiB |
+|    7   N/A  N/A   3643539      C   ray::RayWorkerWrapper                     35598MiB |
+
+|    0   N/A  N/A   3646061      C   python                                    36750MiB |
+|    1   N/A  N/A   3646465      C   ray::RayWorkerWrapper                     36030MiB |
+|    2   N/A  N/A   3646583      C   ray::RayWorkerWrapper                     36030MiB |
+|    3   N/A  N/A   3646739      C   ray::RayWorkerWrapper                     36030MiB |
+|    4   N/A  N/A   3646858      C   ray::RayWorkerWrapper                     36030MiB |
+|    5   N/A  N/A   3646976      C   ray::RayWorkerWrapper                     36030MiB |
+|    6   N/A  N/A   3647094      C   ray::RayWorkerWrapper                     36030MiB |
+|    7   N/A  N/A   3647212      C   ray::RayWorkerWrapper                     35598MiB |
+
+
+With Lora:
+|    1   N/A  N/A   3638328      C   ray::RayWorkerWrapper                     37556MiB |
+|    2   N/A  N/A   3638445      C   ray::RayWorkerWrapper                     37556MiB |
+|    3   N/A  N/A   3638563      C   ray::RayWorkerWrapper                     37556MiB |
+|    4   N/A  N/A   3638681      C   ray::RayWorkerWrapper                     37556MiB |
+|    5   N/A  N/A   3638800      C   ray::RayWorkerWrapper                     37556MiB |
+|    6   N/A  N/A   3638950      C   ray::RayWorkerWrapper                     37556MiB |
+|    7   N/A  N/A   3639165      C   ray::RayWorkerWrapper                     37124MiB |
+
+|    0   N/A  N/A   3649653      C   python                                    38276MiB |
+|    1   N/A  N/A   3650153      C   ray::RayWorkerWrapper                     37556MiB |
+|    2   N/A  N/A   3650295      C   ray::RayWorkerWrapper                     37556MiB |
+|    3   N/A  N/A   3650448      C   ray::RayWorkerWrapper                     37556MiB |
+|    4   N/A  N/A   3650573      C   ray::RayWorkerWrapper                     37556MiB |
+|    5   N/A  N/A   3650692      C   ray::RayWorkerWrapper                     37556MiB |
+|    6   N/A  N/A   3650810      C   ray::RayWorkerWrapper                     37556MiB |
+|    7   N/A  N/A   3650928      C   ray::RayWorkerWrapper                     37124MiB |
+
+# to run a 256K context window
+nohup python -m vllm.entrypoints.openai.api_server --model gradientai/Llama-3-70B-Instruct-Gradient-262k --tensor-parallel-size 8 --host 127.0.0.1 --port 7777 > vllm.entrypoints.openai.api_server.log 2>&1 &
 
 # If successful, you will see this line when the server is ready- it takes a minute or so to load a model.
 # INFO:     Uvicorn running on http://localhost:8000 (Press CTRL+C to quit)

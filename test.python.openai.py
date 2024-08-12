@@ -3,11 +3,11 @@ from openai import OpenAI
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--port", type=int, default=8000,
-                    help="port number")
+                    help="port number, default 8000")
 parser.add_argument("--host", type=str, default="localhost",
-		    help="host name")
+		    help="host name, default localhost")
 parser.add_argument("--model", type=str, default="mistralai/Mixtral-8x7B-Instruct-v0.1",
-                    help="repo/model")
+                    help="repo/model, default mistralai/Mixtral-8x7B-Instruct-v0.1")
 
 args = parser.parse_args()
 print(f'using host: {args.host}')
