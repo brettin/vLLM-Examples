@@ -14,6 +14,9 @@ python ray-simple.py
 cd ..
 
 ### Start the vllm server
+# On rbh101.cels.anl.gov
+python -m vllm.entrypoints.openai.api_server --api-key cmsc-35360 --model meta-llama/Meta-Llama-3.1-405B-Instruct-FP8 --tensor-parallel-size 8 --pipeline-parallel-size 1 --swap-space 16 --gpu-memory-utilization 0.99 --dtype auto --served-model-name llama31-405b-fp8 --max-num-seqs 32 --max-model-len 32768 --max-num-batched-tokens 32768 --max-seq-len-to-capture 32768 --host 127.0.0.1 --port 9999
+
 python -m vllm.entrypoints.openai.api_server --model mistral-community/Mixtral-8x22B-v0.1 --tensor-parallel-size 8 --host localhost --max-model-len 2096 --enforce-eager --gpu-memory-utilization 0.98
 
 nohup python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoints.openai.api_server.log &
