@@ -14,6 +14,24 @@ python ray-simple.py
 cd ..
 
 ### Start the vllm server
+# On lambda13
+# Here is the recipe. Note that setting kv-cache-dtype to fp8 disables flash attention.
+
+conda create --name vllm-0.6.6-post1 python=3.12
+conda activate vllm-0.6.6-post1
+pip install vllm
+ray start --head --num-cpus 96 --num-gpus 8 
+export OMP_NUM_THREADS=192.  # I’m unsure this has a positive impact.
+
+python -m vllm.entrypoints.openai.api_server --api-key CELS --model deepseek-ai/DeepSeek-V3 --tensor-parallel-size 8 --host localhost --trust-remote-code --gpu-memory-utilization 0.99 --max-num-seqs 32 --swap-space 16 --kv-cache-dtype fp8 --max-model-len 16624 --max-num-batched-tokens 16624
+
+# or 
+
+python -m vllm.entrypoints.openai.api_server --api-key CELS --model deepseek-ai/DeepSeek-V3 --tensor-parallel-size 8 --host localhost --trust-remote-code --gpu-memory-utilization 0.99 --max-num-seqs 32 --swap-space 16 --max-model-len 10400 --max-num-batched-tokens 10400
+
+# On rbh101.cels.anl.gov
+python -m vllm.entrypoints.openai.api_server --api-key cmsc-35360 --model meta-llama/Meta-Llama-3.1-405B-Instruct-FP8 --tensor-parallel-size 8 --pipeline-parallel-size 1 --swap-space 16 --gpu-memory-utilization 0.99 --dtype auto --served-model-name llama31-405b-fp8 --max-num-seqs 32 --max-model-len 32768 --max-num-batched-tokens 32768 --max-seq-len-to-capture 32768 --host 127.0.0.1 --port 9999
+
 python -m vllm.entrypoints.openai.api_server --model mistral-community/Mixtral-8x22B-v0.1 --tensor-parallel-size 8 --host localhost --max-model-len 2096 --enforce-eager --gpu-memory-utilization 0.98
 
 nohup python -m vllm.entrypoints.openai.api_server --model mistralai/Mixtral-8x7B-Instruct-v0.1 --tensor-parallel-size 8 --host localhost 2>&1 > vllm.entrypoints.openai.api_server.log &
