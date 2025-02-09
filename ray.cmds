@@ -23,11 +23,11 @@ pip install vllm
 ray start --head --num-cpus 96 --num-gpus 8 
 export OMP_NUM_THREADS=192.  # I’m unsure this has a positive impact.
 
-python -m vllm.entrypoints.openai.api_server --api-key CELS --model deepseek-ai/DeepSeek-V3 --tensor-parallel-size 8 --host localhost --trust-remote-code --gpu-memory-utilization 0.99 --max-num-seqs 32 --swap-space 16 --kv-cache-dtype fp8 --max-model-len 16624 --max-num-batched-tokens 16624
+python -m vllm.entrypoints.openai.api_server --api-key EMPTY --model deepseek-ai/DeepSeek-V3 --tensor-parallel-size 8 --host localhost --trust-remote-code --gpu-memory-utilization 0.99 --max-num-seqs 32 --swap-space 16 --kv-cache-dtype fp8 --max-model-len 16624 --max-num-batched-tokens 16624
 
 # or 
 
-python -m vllm.entrypoints.openai.api_server --api-key CELS --model deepseek-ai/DeepSeek-V3 --tensor-parallel-size 8 --host localhost --trust-remote-code --gpu-memory-utilization 0.99 --max-num-seqs 32 --swap-space 16 --max-model-len 10400 --max-num-batched-tokens 10400
+python -m vllm.entrypoints.openai.api_server --api-key EMPTY --model deepseek-ai/DeepSeek-V3 --tensor-parallel-size 8 --host localhost --trust-remote-code --gpu-memory-utilization 0.99 --max-num-seqs 32 --swap-space 16 --max-model-len 10400 --max-num-batched-tokens 10400
 
 # allenai/Llama-3.1-Tuli-3-405B 
 python -m vllm.entrypoints.openai.api_server --api-key CELS --model Llama-3.1-Tulu-3-405B-FP8-Dynamic --tensor-parallel-size 8 --pipeline-parallel-size 1 --swap-space 16 --gpu-memory-utilization 0.99 --dtype auto --served-model-name Llama-3.1-Tulu-3-405B-FP8-Dynamic --max-num-seqs 32 --max-model-len 64000 --max-num-batched-tokens 64000 --max-seq-len-to-capture 64000 --host 127.0.0.1 --port 9999
