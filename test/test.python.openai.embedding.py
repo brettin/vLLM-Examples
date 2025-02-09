@@ -1,12 +1,27 @@
 from openai import OpenAI
 
-# Modify OpenAI's API key and API base to use vLLM's API server.
-openai_api_key = "EMPTY"
-openai_api_base = "http://localhost:8000/v1"
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--port", type=int, default=8000,
+                    help="port number, default 8000")
+parser.add_argument("--host", type=str, default="localhost",
+            help="host name, default localhost")
+parser.add_argument("--model", type=str, default="mistralai/Mixtral-8x7B-Instruct-v0.1",
+                    help="repo/model, default mistralai/Mixtral-8x7B-Instruct-v0.1")
+parser.add_argument("--key", type=str, default="EMPTY",
+        help="the key passed to the vllm entrypoint when it was started")
+
+args = parser.parse_args()
+print(f'using host: {args.host}')
+print(f'using port: {args.port}')
+print(f'using api-key: {args.key}')
+
+# Set OpenAI's API key and API base to use vLLM's API server.
+openai_api_base = f"http://{args.host}:{args.port}/v1"
+
 
 client = OpenAI(
-    # defaults to os.environ.get("OPENAI_API_KEY")
-    api_key=openai_api_key,
+    api_key=args.key,
     base_url=openai_api_base,
 )
 
@@ -22,6 +37,12 @@ responses = client.embeddings.create(
     model=model,
     encoding_format="float",
 )
+print(f'{responses}')
 
-for data in responses.data:
-    print(data.embedding)  # list of float of len 4096
+if responses.data is not None:
+    print(f'{responses.data}')
+    for data in responses.data:
+        print(data.embedding)  # list of float of len 4096
+else:
+    print("response.data is None")
+

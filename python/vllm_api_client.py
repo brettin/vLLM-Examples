@@ -1,8 +1,8 @@
 import requests
 import json
 
-base  = f'http://localhost:8000/'
-api_key = "CELS"
+base  = f'http://localhost:9999/'
+api_key = "EMPTY"
 
 headers = {
     "Authorization": f"Bearer {api_key}",
