@@ -30,10 +30,11 @@ python -m vllm.entrypoints.openai.api_server --api-key EMPTY --model deepseek-ai
 python -m vllm.entrypoints.openai.api_server --api-key EMPTY --model deepseek-ai/DeepSeek-V3 --tensor-parallel-size 8 --host localhost --trust-remote-code --gpu-memory-utilization 0.99 --max-num-seqs 32 --swap-space 16 --max-model-len 10400 --max-num-batched-tokens 10400
 
 # allenai/Llama-3.1-Tuli-3-405B 
-nohup python -m vllm.entrypoints.openai.api_server --api-key cmsc-35360 --model Llama-3.1-Tulu-3-405B-FP8-Dynamic --tensor-parallel-size 8 --pipeline-parallel-size 1 --swap-space 16 --gpu-memory-utilization 0.99 --dtype auto --served-model-name  Llama-3.1-Tulu-3-405B-FP8-Dynamic --max-num-seqs 32 --max-model-len 32768 --max-num-batched-tokens 32768 --max-seq-len-to-capture 32768 --host 127.0.0.1 --port 9999 > vllm.entrypoints.openai.api_server.log 2>&1 &
+python -m vllm.entrypoints.openai.api_server --api-key EMPTY --model /rbscratch/brettin/.cache/Llama-3.1-Tulu-3-405B-FP8-Dynamic --tensor-parallel-size 8 --pipeline-parallel-size 1 --swap-space 16 --gpu-memory-utilization 0.99 --dtype auto --served-model-name Llama-3.1-Tulu-3-405B-FP8-Dynamic --max-num-seqs 32 --max-model-len 64000 --max-num-batched-tokens 64000 --max-seq-len-to-capture 64000 --host 127.0.0.1 --port 9999
+
 
 # On rbh101.cels.anl.gov
-nohup python -m vllm.entrypoints.openai.api_server --api-key cmsc-35360 --model meta-llama/Meta-Llama-3.1-405B-Instruct-FP8 --tensor-parallel-size 8 --pipeline-parallel-size 1 --swap-space 16 --gpu-memory-utilization 0.99 --dtype auto --served-model-name llama31-405b-fp8 --max-num-seqs 32 --max-model-len 32768 --max-num-batched-tokens 32768 --max-seq-len-to-capture 32768 --host 127.0.0.1 --port 9999 > vllm.entrypoints.openai.api_server.log 2>&1 &
+nohup python -m vllm.entrypoints.openai.api_server --api-key EMPTY --model meta-llama/Meta-Llama-3.1-405B-Instruct-FP8 --tensor-parallel-size 8 --pipeline-parallel-size 1 --swap-space 16 --gpu-memory-utilization 0.99 --dtype auto --served-model-name llama31-405b-fp8 --max-num-seqs 32 --max-model-len 32768 --max-num-batched-tokens 32768 --max-seq-len-to-capture 32768 --host 127.0.0.1 --port 9999 > vllm.entrypoints.openai.api_server.log 2>&1 &
 
 python -m vllm.entrypoints.openai.api_server --model mistral-community/Mixtral-8x22B-v0.1 --tensor-parallel-size 8 --host localhost --max-model-len 2096 --enforce-eager --gpu-memory-utilization 0.98
 
