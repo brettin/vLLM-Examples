@@ -1,7 +1,7 @@
 import requests
 import json
 
-base  = f'http://localhost:9999/'
+base  = f'http://localhost:8000/'
 api_key = "EMPTY"
 
 headers = {
