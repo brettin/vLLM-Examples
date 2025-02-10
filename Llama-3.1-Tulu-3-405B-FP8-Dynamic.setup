@@ -1,0 +1,20 @@
+# Create environment
+conda create --name vllm-v0.7.2 python=3.12
+conda activate vllm-v0.7.2
+pip install vllm==0.7.2
+
+# (Re-) start ray server to avoid version mismatches
+ray start --head --num-cpus 32 --num-gpus 8
+
+# Set paths
+export HF_DATASETS_CACHE=/rbscratch/brettin/.cache
+export TRANSFORMERS_CACHE=/rbscratch/brettin/.cache  # depricated
+export HF_HOME=/rbscratch/brettin/.cache
+
+# Start serve (CHANGE KEY AND PORT)
+nohup python -m vllm.entrypoints.openai.api_server --api-key EMPTY --model /rbscratch/brettin/.cache/Llama-3.1-Tulu-3-405B-FP8-Dynamic --tensor-parallel-size 8 --pipeline-parallel-size 1 --swap-space 16 --gpu-memory-utilization 0.99 --dtype auto --served-model-name Llama-3.1-Tulu-3-405B-FP8-Dynamic --max-num-seqs 32 --max-model-len 64000 --max-num-batched-tokens 64000 --max-seq-len-to-capture 64000 --host 127.0.0.1 --port 9900 > vLLM-Examples/Feb-10-2025.log 2>&1 &
+
+# Test server
+python vLLM-Examples/test/test.python.openai.py --model Llama-3.1-Tulu-3-405B-FP8-Dynamic --port 9900 --host 127.0.0.1 --key EMPTY
+
+
